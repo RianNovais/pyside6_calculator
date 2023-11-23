@@ -8,7 +8,7 @@ from variables import DARKER_PRIMARY_COLOR, DARKEST_PRIMARY_COLOR, PRIMARY_COLOR
 qss = f"""
     QPushButton[cssClass="specialButton"] {{
         color: "#FFF";
-        background: #FF007F;
+        background: {PRIMARY_COLOR};
     }}
     QPushButton[cssClass="specialButton"]:hover {{ 
         color: #fff;
@@ -30,7 +30,7 @@ def setup_theme():
                 "primary": f"{PRIMARY_COLOR}",
             },
             "[light]": {
-                "primary": f"#FF007F",
+                "primary": f"{PRIMARY_COLOR}",
             },
         },
         #adding the string "QSS" that defines special colors for special buttons to the function that defines the theme
