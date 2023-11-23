@@ -1,4 +1,12 @@
+from pathlib import Path
+
 #This file will contain constants that will be used in the project, such as colors, paths, etc.
+
+#PATHS
+
+ROOT_DIR = Path().absolute()
+FILES_DIR = ROOT_DIR / 'files'
+WINDOW_ICON_DIR = FILES_DIR / 'icon.png'
 
 
 #COLORS
