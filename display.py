@@ -7,6 +7,7 @@ from utils import isEmpty
 # Display class, which will show the numbers clicked or typed
 
 class Display(QLineEdit):
+    #signals of key
     enterPressed = Signal()
     backspacePressed = Signal()
     escPressed = Signal()
@@ -24,6 +25,11 @@ class Display(QLineEdit):
 
         self.setMinimumWidth(500)
 
+    #here we capture the button click events that take numbers and letters to the display (QLineEdit) and block the user
+    # from typing. and here we handle some values that the user can type via the keyboard, such as the "Enter", "Esc"
+    # and BACKSPACE keys, enter performs the operation, esc clears the screen, and backspace clears the last character
+    # from the display, here we emit a .emit for the respective signals, which will be passed to the button class,
+    # where we will connect these signals to the respective slots
     def keyPressEvent(self, event:QKeyEvent):
         key = event.key()
         KEYS = Qt.Key

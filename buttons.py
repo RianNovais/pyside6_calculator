@@ -8,8 +8,7 @@ from display import Display
 from PySide6.QtCore import Slot, Qt
 from info import Info
 from PySide6.QtWidgets import QMessageBox
-from PySide6.QtWidgets import QLabel, QVBoxLayout
-from PySide6.QtGui import QPixmap
+from PySide6.QtWidgets import QVBoxLayout
 from pathlib import Path
 from PySide6.QtWidgets import QWidget
 
@@ -62,6 +61,7 @@ class ButtonGrid(QGridLayout):
 
         self.equation = self._initial_equation_text
 
+    # propertys we will get the value of our equation and throw it into the info
     @property
     def equation(self):
         return self._equation
@@ -75,12 +75,11 @@ class ButtonGrid(QGridLayout):
 
 
         self.display.setFocus()
+
+        #connecting the signals defined in the display class, which capture user inputs and trigger signals according
+        #to the key clicked
         self.display.enterPressed.connect(self._equalButton)
-
-
         self.display.backspacePressed.connect(self.display.backspace)
-
-
         self.display.escPressed.connect(self._clear)
 
         self.display.setFocus()
@@ -91,31 +90,24 @@ class ButtonGrid(QGridLayout):
 
 
                 if not isNumOrDot(cellData) and not isEmpty(cellData):
-
                     b.setProperty('cssClass', 'specialButton')
-
                     self.configSpecialButton(b)
 
-
                 self.addWidget(b, i, j)
-
 
                 buttonSlot = self.makeSlot(
                     self.insertButtonTextToDisplay,
                     b
                 )
-
-
                 b.clicked.connect(buttonSlot)
 
-
+    # we delay the function to insert the value of the button the user clicked into the display
     def makeSlot(self, func, button):
-
         def realSlot():
             func(button)
         return realSlot
 
-
+    # displays error on screen with customized messageBox with specific text
     def _showError(self, text):
 
         msgBox = self.window.makeMsgBox()
@@ -127,7 +119,7 @@ class ButtonGrid(QGridLayout):
 
 
 
-
+    # personalized messagebox with text but showing an information message with a different icon
     def _showInfo(self, text):
         msgBox = self.window.makeMsgBox()
         msgBox.setText(text)
@@ -135,18 +127,17 @@ class ButtonGrid(QGridLayout):
         msgBox.exec()
         self.display.setFocus()
 
+    # function that checks the button the user clicked, if it's a number it adds it to the display
     def insertButtonTextToDisplay(self, button):
-
         text = button.text()
-
         new_display_content = self.display.text() + text
-
-
         if not isValidNumber(new_display_content):
             return
         self.display.insert(text)
         self.display.setFocus()
 
+    # checks the button that the user clicked as well, but treats special buttons, which are those that are not numeric
+    # and links them to the slot that performs each of their functions
     def configSpecialButton(self, button):
         text = button.text()
 
@@ -170,9 +161,9 @@ class ButtonGrid(QGridLayout):
 
         self.display.setFocus()
 
-
+    # function triggered when the user presses "C" clears the entire calculator memory
     def _clear(self):
-        print('Limpou o display')
+        print('Clear the display')
         self._left = None
         self._right = None
         self._op = None
@@ -180,7 +171,7 @@ class ButtonGrid(QGridLayout):
         self.display.clear()
         self.display.setFocus()
 
-
+    # stores the operator that the user clicked and waits for the next number to perform the operation
     def _operatorClicked(self, button: Button):
 
         displayText = self.display.text()
@@ -200,8 +191,10 @@ class ButtonGrid(QGridLayout):
         self.equation = f'{self._left} {self._op} ??'
         self.display.setFocus()
 
+    # performs the operation when the user clicks "=" or presses ENTER, works normally without errors, when the
+    # user already has the number on the left, the operator and the number on the right, puts everything in a
+    # string, and performs an EVAL
     def _equalButton(self):
-
 
         displayText = self.display.text()
 
