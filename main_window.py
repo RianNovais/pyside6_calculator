@@ -5,6 +5,7 @@ from variables import WINDOW_ICON_DIR
 from info import Info
 from display import Display
 from buttons import Button, ButtonGrid
+from PySide6.QtWidgets import QMessageBox
 
 
 # class of the main window, which will have the central widget and the vLayout inserted and inside the vLayout we will
@@ -39,6 +40,10 @@ class MyWindow(QMainWindow):
         #adding icon to window
         self.icon = QIcon(str(WINDOW_ICON_DIR))
         self.setWindowIcon(self.icon)
+
+    def makeMsgBox(self):
+        messageBox = QMessageBox(self)
+        return messageBox
 
 
 
